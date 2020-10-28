@@ -7,6 +7,11 @@
     <style>
       @import url("https://fontlibrary.org/face/cmu-serif");
 
+      html, body {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
         padding: 0;
@@ -22,13 +27,13 @@
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 5px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        box-shadow: 0 5px 15px rgba(0,0,0, 0.3);
+        /* border: 1px solid rgba(0, 0, 0, 0.2); */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 
-        /* Don't use drop shadow. Every frame redraw
+        /* Don't use drop shadow. Every frame redraws
          * the shadow, 60 times a second, if you use
          * `drop-shadow`, causing like 23ms of time to be
-         * wasted on what the dev-tool call 'composite layers'.
+         * wasted on what the dev-tools call 'composite layers'.
          * `box-shadow` above works without re-drawing itself,
          * use that instead.
          */
@@ -44,6 +49,16 @@
         left: 15px;
         top: 15px;
         border: 1px solid rgba(0,0,0,0.4);
+      }
+
+      hr {
+        height: 6px;
+        background: rgba(25,25,25,0.07);
+        border: none;
+      }
+
+      button {
+        cursor: pointer;
       }
     </style>
     <script type="text/x-mathjax-config">
@@ -62,12 +77,16 @@
     we'll have to manually add our files. -->
     <select id="picks" onchange="load()">
       <option value="chords.js">chords.js</option>
+      <option value="ellipse_construction.js">ellipse_construction.js</option>
       <option value="orthographic.js">orthographic.js</option>
+      <option value="weak_perspective.js">weak_perspective.js</option>
       <option value="vector_plot.js">vector_plot.js</option>
+      <option value="AM_GM_inequality.js">AM_GM_inequality.js</option>
       <option value="wiggler.js">wiggler.js (Snake with physics)</option>
       <option value="sinusoidal.js">sinusoidal.js</option>
       <option value="joy.js">joy.js</option>
       <option value="still_shapes.js">still_shapes.js</option>
+      <option value="spiral.js">spiral.js (Euler spirals)</option>
       <option value="night_sky.js">night_sky.js</option>
       <option value="clocks.js">clocks.js</option>
       <option value="gaussian_dist.js">gaussian_dist.js</option>
@@ -75,14 +94,15 @@
       <option value="text.js">text.js</option>
       <option value="polygons.js">polygons.js</option>
       <option value="sketchbook.js">sketchbook.js</option>
+      <option value="pendulum_graph.js">pendulum_graph.js</option>
+      <option value="double_pendulum.js">double_pendulum.js</option>
+      <option value="spring_pendulum.js">spring_pendulum.js</option>
       <option value="tree.js">tree.js</option>
       <option value="noise2D.js">noise2D.js</option>
       <option value="noise3D.js">noise3D.js</option>
       <option value="vector_field.js">vector_field.js (Perlin Noise)</option>
       <option value="pong.js">pong.js</option>
-      <option value="double_pendulum.js">double_pendulum.js</option>
       <option value="your_example.js">My Example</option>
-      <option value="spring_pendulum.js">spring_pendulum.js</option>
     </select>
 
 
@@ -97,6 +117,11 @@
       let load_number = 1;
 
       const replace_script = (elem, location) => {
+        const name = [...document.getElementById('picks').options]
+              .filter(opt => opt.value == location);
+        const title = name[0] ? name[0].innerText : location;
+        document.title = `${title} | BasicCanvas`;
+        console.log(document.title);
         let load_frame = document.getElementById('load');
         load_frame.removeChild(elem);
 
@@ -141,7 +166,6 @@
         include = document.getElementById('include');
         picks = document.getElementById('picks');
         picks.value = include.getAttribute('src').split('?')[0];
-
         load_number++;
       }
 
@@ -149,6 +173,10 @@
         file = document.getElementById('picks').value;
         localStorage.setItem('last_script', file);
       });
+
+      window.onload = () => {
+        window.scrollTo(0, document.body.scrollHeight);
+      };
     </script>
   </body>
 </html>
